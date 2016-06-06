@@ -1,6 +1,6 @@
 ---
 title: "Vectors: practice I"
-author: "R Workshop"
+author: "Karla Villalta"
 output:
   html_document:
     css: ../workshop.css
@@ -24,6 +24,11 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{2, 1, 0, -1\}
 \]
 
+```{r, eval=TRUE}
+x<-(-1:2)
+y<-(2:-1)
+```
+
 1.   Build the following vectors using `seq()`.
 
 \[
@@ -31,6 +36,12 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{2, 4, 6, 8, 10, 12\} \\
 \{2, 3.5, 5, 6.5\}
 \]
+
+```{r, eval= TRUE}
+x.1<-seq(-1,2)
+x.2<-seq(2,12,2)
+x.3<-seq(2,6.5,1.5)
+```
 
 1.   Build the following vectors using `rep()`.
 
@@ -42,6 +53,9 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3\}
 \]
 
+```{r, eval=TRUE}
+
+```
 * * *
 
 ## Manipulating vectors
