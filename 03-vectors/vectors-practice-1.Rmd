@@ -134,8 +134,11 @@ apart both horizontally and vertically).
 draw(p3x, p3y)
 
 # Fix the code
-p3x[p3x<33 & p3x>0 &p3y>25 &p3y<75]<-p3x[p3x<33 & p3x>0 &p3y>25 &p3y<75]-5
-
+# Evey other point has been shifted 5 units up or down
+# Use seq function and re-draw image
+p3x[seq(1, length(p3x),2)]<-p3x[seq(1, length(p3x),2)]-5
+p3y[seq(1, length(p3y),2)]<-p3y[seq(1, length(p3y),2)]-5
+draw(p3x, p3y)
 ```
 
 here, we almost have four duplicates of Hobbes in several places, but every other 
