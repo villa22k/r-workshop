@@ -133,6 +133,21 @@ new.p2x[p2x > 45 & p2y > 50] <- new.p2x[p2x > 45 & p2y > 50]+15
 draw(new.p2x, p2y)
 ```
 
+Here is way to find the desired offset programatically.
+
+```{r}
+# Find median of upper right Calvin
+shifted.center <- mean(p2x[p2x > 45 & p2x < 100 & p2y > 50])
+# Find median of lower right Calvie
+target.center <- mean(p2x[p2x > 45 & p2x < 100 & p2y < 50])
+# Calculate amount to shift
+amount.to.shift <- target.center - shifted.center
+
+new.p2x <- p2x
+new.p2x[p2x > 45 & p2y > 50] <- new.p2x[p2x > 45 & p2y > 50] + amount.to.shift
+draw(new.p2x, p2y)
+```
+
 3.   Let's take a look at the third example:
 
 ```{r}
