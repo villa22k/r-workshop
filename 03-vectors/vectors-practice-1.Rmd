@@ -24,6 +24,11 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{2, 1, 0, -1\}
 \]
 
+```{r}
+-1:2
+2:-1
+```
+
 1.   Build the following vectors using `seq()`.
 
 \[
@@ -31,6 +36,12 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{2, 4, 6, 8, 10, 12\} \\
 \{2, 3.5, 5, 6.5\}
 \]
+
+```{r}
+seq(-1, 2, 1)
+seq(2, 12, 2)
+seq(2, 7, 1.5)
+```
 
 1.   Build the following vectors using `rep()`.
 
@@ -41,6 +52,14 @@ opts_chunk$set(warning=FALSE,message=FALSE)
 \{1, 2, 3, 1, 2, 3, 1\} \\
 \{1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3\}
 \]
+
+```{r}
+rep(c(1, 2, 3), 3)
+c(rep(1, 2), rep(2, 2), rep(3, 2))
+c(rep(1, 2), 2, rep(3, 2))
+c(rep(c(1, 2, 3), 2), 1)
+rep(c(rep(1, 2), rep(2, 2), rep(3, 2)), 3)
+```
 
 * * *
 
@@ -91,6 +110,12 @@ the points that are part of Hobbes on the right side have been mistakenly moved
 up by 25 units. Please fix this problem, so that drawing `p1x` with `p1y` results 
 in a more plausible rendering of Hobbes. 
 
+```{r}
+new.p1y <- p1y
+new.p1y[p1x > 50] <- new.p1y[p1x > 50]-25
+draw(p1x, new.p1y)
+```
+
 2.   Let's take a look at the second example:
 
 ```{r}
@@ -102,6 +127,12 @@ right drawing has been shifted to the left. Please move that part of the drawing
 to the right, so that the four Calvins are symmetrically placed (the same distance 
 apart both horizontally and vertically).
 
+```{r}
+new.p2x <- p2x
+new.p2x[p2x > 45 & p2y > 50] <- new.p2x[p2x > 45 & p2y > 50]+15
+draw(new.p2x, p2y)
+```
+
 3.   Let's take a look at the third example:
 
 ```{r}
@@ -111,6 +142,16 @@ draw(p3x, p3y)
 here, we almost have four duplicates of Hobbes in several places, but every other 
 point has been moved five units up and to the right, making it almost impossible 
 to see Hobbes anywhere. Try to resolve the four duplicates of Hobbes.
+
+```{r}
+new.p3x <- p3x
+new.p3y <- p3y
+
+new.p3x[seq(1, length(new.p3y), 2)] <- new.p3x[seq(1, length(new.p3y), 2)] - 5
+new.p3y[seq(1, length(new.p3y), 2)] <- new.p3y[seq(1, length(new.p3y), 2)] - 5
+
+draw(new.p3x, new.p3y)
+```
 
 <div id="license">
 Adapted from material developed by Olaf Hall-Holt and Paul Roback for CS 125 at St. Olaf College.
