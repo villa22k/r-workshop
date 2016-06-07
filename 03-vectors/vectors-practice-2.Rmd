@@ -23,7 +23,7 @@ In addition to its use on vectors, `order()` can also be used to sort (or
 I suppose order!) dataframes.  Consider one of R's preloaded datasets, from
 Motor Trend Cars.
 
-```{r}
+```{r, echo=FALSE}
 data(mtcars)
 mtcars
 ```
@@ -33,6 +33,10 @@ that showcases which ones have the best `mpg`, then, the ones that have the
 highest `hp`.  Using `order()`, rearrange this data frame such that it's ordered
 first by `mpg` (low to high) and then by `hp` (high to low).
 
+```{r, echo=FALSE}
+# Order by  ascending mpg and descending hp
+new.mtcars<-mtcars[order(mtcars$mpg, -mtcars$hp),]
+```
 * * *
 
 ## Changing Vector Elements
@@ -58,6 +62,18 @@ If you now draw the next set of vectors:
 
 ```{r}
 draw(p1x, p1y)
+
+# To fix this error, remove the y coordinates that are larger than 70 but smaller than 100
+# There are 50 indexes - greater than 70 but smaller than 100
+which(p1y>70 & p1y<100)
+
+# Remove these indexes from the x and y values so they are not mapped
+new.p1x<-p1x[-which(p1y>70 & p1y<100)]
+new.p1y<-p1y[-which(p1y>70 & p1y<100)]
+
+# Redraw them 
+draw(new.p1x, new.p1y)
+                                   
 ```
 
 you will see Calvin and his mirror reflection, except that there is a problem with the data: some garbage points are mixed in with the correct data, resulting in a lot of spikes that reach reach between 75 and 100 in the y direction. Please fix this problem, so that drawing `p1x` with `p1y` results in a clean rendering of Calvin and his reflection.
@@ -68,6 +84,22 @@ Let's take a look at the second example:
 
 ```{r}
 draw(p2x, p2y)
+
+# This is Hobbes' fourth image. 
+
+# Let's calculate the diff in y between the upper-right image and the bottom-left image and record it
+diff.y2<-p2y[p2y>60 & p2y<100] - p2y[p2y<60 & p2y>0]
+
+# The difference is consistenly 50
+draw(p2x[400:800], p2y[400:800]+50)
+
+# Since we have 3 images, let's divide the total number of x and y points by 3 and get the y-cordinates of the upper-left image and x-coordinates of the bottom-right image.
+new.x<-c(p2x, p2x[400:800])
+new.y<-c(p2y, p2y[400:800]+50)
+
+draw(new.x, new.y)
+# Add this to the vectors p2x and p2y and we are good to go 
+
 ```
 
 here, we almost have four duplicates of Hobbes in a square configuration, but the upper right drawing is missing. Please duplicate one of the drawings of Hobbes, and place it in the upper right corner (by modifying the `p2x` and `p2y` vectors, that is).
@@ -78,6 +110,22 @@ Let's take a look at the third example:
 
 ```{r}
 draw(p3x, p3y)
+
+# What we want to do is to transform the first image to the second by swaping the values of x for y and vs
+
+# Original image
+draw(p3x[1315:length(p3x)], p3y[1315:length(p3x)])
+# Final image 
+draw(p3y[1315:length(p3x)], p3x[1315:length(p3x)])
+
+# Reassign the values
+new.p3x<-p3x
+new.p3y<- p3y
+new.p3x[1315:length(p3x)]<-p3y[1315:length(p3x)]
+new.p3y[1315:length(p3x)]<-p3x[1315:length(p3x)]
+
+# Redraw the picture 
+draw(new.p3x, new.p3y)
 ```
 
 here, Calvin is running around a circle, but the drawing closest to the origin is backwards. In particular, the x and y coordinates need to be flipped to restore symmetry. As before, please fix this problem.
