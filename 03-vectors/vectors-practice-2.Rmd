@@ -73,7 +73,8 @@ new.p1y<-p1y[-which(p1y>70 & p1y<100)]
 
 # Redraw them 
 draw(new.p1x, new.p1y)
-                                   
+ 
+# Alternatevily, we could scale Calvin's original image given by p0x and p0y, then swap 
 ```
 
 you will see Calvin and his mirror reflection, except that there is a problem with the data: some garbage points are mixed in with the correct data, resulting in a lot of spikes that reach reach between 75 and 100 in the y direction. Please fix this problem, so that drawing `p1x` with `p1y` results in a clean rendering of Calvin and his reflection.
