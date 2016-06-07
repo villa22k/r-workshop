@@ -33,6 +33,10 @@ that showcases which ones have the best `mpg`, then, the ones that have the
 highest `hp`.  Using `order()`, rearrange this data frame such that it's ordered
 first by `mpg` (low to high) and then by `hp` (high to low).
 
+```{r}
+by.best.mpg <- mtcars[order(mtcars$mpg, mtcars$hp),]
+```
+
 * * *
 
 ## Changing Vector Elements
@@ -62,6 +66,12 @@ draw(p1x, p1y)
 
 you will see Calvin and his mirror reflection, except that there is a problem with the data: some garbage points are mixed in with the correct data, resulting in a lot of spikes that reach reach between 75 and 100 in the y direction. Please fix this problem, so that drawing `p1x` with `p1y` results in a clean rendering of Calvin and his reflection.
 
+```{r}
+new.p1x <- p1x[!(p1y > 75 & p1y < 100)]
+new.p1y <- p1y[!(p1y > 75 & p1y < 100)]
+draw(new.p1x, new.p1y)
+```
+
 1.   
 
 Let's take a look at the second example:
@@ -71,6 +81,12 @@ draw(p2x, p2y)
 ```
 
 here, we almost have four duplicates of Hobbes in a square configuration, but the upper right drawing is missing. Please duplicate one of the drawings of Hobbes, and place it in the upper right corner (by modifying the `p2x` and `p2y` vectors, that is).
+
+```{r}
+new.hobbes.x <- p2x[p2y>50] + 50
+new.hobbes.y <- p2y[p2y>50]
+draw(c(p2x, new.hobbes.x), c(p2y, new.hobbes.y))
+```
 
 1.   
 
@@ -82,6 +98,17 @@ draw(p3x, p3y)
 
 here, Calvin is running around a circle, but the drawing closest to the origin is backwards. In particular, the x and y coordinates need to be flipped to restore symmetry. As before, please fix this problem.
 
+
+```{r}
+new.p3x <- p3x
+new.p3y <- p3y
+
+# 42 and 45 chosen by trail and error
+new.p3x[p3x < 42 & p3y < 45] <- p3y[p3x < 42 & p3y < 45]
+new.p3y[p3x < 42 & p3y < 45] <- p3x[p3x < 42 & p3y < 45]
+
+draw(new.p3x, new.p3y)
+```
 
 <div id="license">
 Adapted from material developed by Olaf Hall-Holt and Paul Roback for CS 125 at St. Olaf College.
