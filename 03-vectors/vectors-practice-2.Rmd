@@ -34,7 +34,7 @@ highest `hp`.  Using `order()`, rearrange this data frame such that it's ordered
 first by `mpg` (low to high) and then by `hp` (high to low).
 
 ```{r}
-by.best.mpg <- mtcars[order(mtcars$mpg, mtcars$hp),]
+by.best.mpg <- mtcars[order(mtcars$mpg, -mtcars$hp),]
 ```
 
 * * *
