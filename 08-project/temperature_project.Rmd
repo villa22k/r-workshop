@@ -1,0 +1,228 @@
+---
+title: "Project: vectors and functions"
+author: "R Workshop"
+output:
+  html_document:
+    css: ../workshop.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+require(knitr)
+opts_chunk$set(warning=FALSE,message=FALSE)
+```
+
+The following link will load the data:
+
+```{r, echo=FALSE}
+load(url('http://www.stolaf.edu/people/olaf/cs125/project1.RData'))
+
+```
+
+#### Recall:
+
+- The first element of the vector corresponds to the average temperature 
+in January of 1881. The second element is February 1881, etc. The last element is December 2012.
+- Each element in the vector is the scaled deviation (by 100) from a baseline mean 
+global temperature in Celsius. The baseline mean global temperature is the 
+global temperature from 1951-1980, which is 14.0o C (57.2o Fahrenheit).
+- For data details, read the bottom of the Nasa page:
+http://data.giss.nasa.gov/gistemp/tabledata_v3/GLB.Ts+dSST.txt
+
+#### Some requests
+
+- If there are some tasks that you can imagine needing to code up again, *write a 
+function for it*.
+- Your final html document should read like an informative analysis of this
+temperature data set meant to be be consumed by a non-programmer. That is,
+    - Supress R code (though an exception may be easy-to-read output).
+    - The narrative should be as in a natural analysis; not as a collection of
+    enumerated answers to exercises.
+    - Use sensible Markdown sytax for organization.
+    - Fiddle with "knitr chunk options" to get the figures you're going for.
+- Your source, however, should be crystal clear to another programmer.
+    + Code with style.
+    + Label your chunks.
+
+* * *
+
+Please complete the following exercises using R vectors:
+
+1.   Convert the data from scaled deviation in Celsius to absolute temperature in 
+Fahrenheit. What is the mean temperature in Fahrenheit over the entire data set? 
+Confirm that your result is reasonable. Use your new Fahrenheit vector for the 
+rest of the exercises.
+
+```{r mean_temperature, echo=FALSE}
+temp_data <- tData
+
+# Converting to F
+temp_data_f <- (temp_data/100)*1.8 + 57.2
+
+# Calculate mean
+mean_temp <- mean (temp_data_f)
+
+mean_temp
+
+```
+
+1.   Find the mean global temperature of each the summer months: June, July, and August. Also please find the lowest and 
+highest global average temperatures for each month. This is easiest if you create new 
+vectors that have all June temperatures, all July temperatures, and so on. 
+When did the lowest and highest occur for each month? Are the highest temperatures 
+generally more recent than the lowest temperatures?
+
+```{r mean_summers, echo=FALSE}
+temp_matrix <- matrix(temp_data_f, nrow = 12, ncol = 132, byrow = F)
+rownames(temp_matrix) <- c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+colnames(temp_matrix) <- 1:132
+
+# Mean of each summer
+summer <- temp_matrix[6:8,]
+summer_means <- rowMeans(summer)
+summer_means
+
+# Max for each summer
+max_temps_per_month <- apply(temp_matrix, 1, max)
+max_temps_per_month
+
+# Min for each summer
+min_temps_per_month <- apply(temp_matrix, 1, min)
+min_temps_per_month
+
+# Which years were hottest
+hottest_years <- apply(temp_matrix, 1, which.max) + 1881
+hottest_years
+
+# Min for each summer
+coldest_years <- apply(temp_matrix, 1, which.min) + 1881
+coldest_years
+```
+
+1.   For the rest of the project, it will be helpful to define two functions. 
+Define one function that takes the month and year as input and outputs the index in 
+the vector for that given month and year. Define another function that takes the index 
+in the vector as the input and outputs the month and year.
+
+``` {r utility_functions, echco=FALSE}
+month_year_to_index <- function(month = 1, year = 1881) {
+  y <- year - 1881
+  return(y*12 + month)
+}
+
+index_to_month_year <- function(ind = 1) {
+  month <- (ind %% 12)
+  y <- floor(ind / 12)
+  return(c(month, y+1881))
+}
+
+```
+
+Some examples to demonstrate the functions:
+
+
+```{r} 
+month_year_to_index(1, 1881)
+month_year_to_index(2, 1881)
+month_year_to_index(1, 1882)
+
+index_to_month_year(1)
+index_to_month_year(2)
+index_to_month_year(13)
+
+```
+
+
+1.   Create plots of the monthly average temperature over time for each month: 
+one plot for all January average temperatures, one plot for all February average 
+temperatures, etc. To make a plot with a single vector, use the `plot()` function.
+The plots should have *Years* on the horizontal axis, and *Temperature* on the vertical 
+axis. Does there seem to be a warming trend? The previously defined functions will 
+be helpful here.  Feel free to fiddle with the optional arguments to `plot()` (more
+are found with `?par`).
+
+```{r plot_average_temp, echo=FALSE}
+
+  years <- c(1881:2012)
+  plot(years, temp_matrix["Jan",], ylab ="January Temp", xlab="years")
+  plot(years, temp_matrix["Feb",], ylab ="February Temp", xlab="years")
+  plot(years, temp_matrix["Mar",], ylab ="March Temp", xlab="years")
+  plot(years, temp_matrix["Apr",], ylab ="April Temp", xlab="years")
+  plot(years, temp_matrix["May",], ylab ="May Temp", xlab="years")
+  plot(years, temp_matrix["Jun",], ylab ="June Temp", xlab="years")
+  plot(years, temp_matrix["Jul",], ylab ="July Temp", xlab="years")
+  plot(years, temp_matrix["Aug",], ylab ="Aug Temp", xlab="years")
+  plot(years, temp_matrix["Sep",], ylab ="Sep Temp", xlab="years")
+  plot(years, temp_matrix["Oct",], ylab ="Oct Temp", xlab="years")
+  plot(years, temp_matrix["Nov",], ylab ="Nov Temp", xlab="years")
+  plot(years, temp_matrix["Dec",], ylab ="Dec Temp", xlab="years")
+```
+
+1.   Create a plot that shows the average annual temperature over all years. 
+(That is, create one plot where each data point corresponds to the average temperature 
+for a year.) In what years did the highest and lowest average temperatures occur?
+
+```{r annual_temp, echo=FALSE}
+plot(years, colMeans(temp_matrix), ylab = "Average Temperature")
+
+# Max year's temp
+hottest_years<- which.max(colMeans(temp_matrix)) + 1881
+
+#
+coldest_years <- which.min(colMeans(temp_matrix)) + 1881
+
+```
+
+1.   Create a plot showing the monthly average temperature starting at January 
+2000 (one plot showing all data points from January 2000 through December 2012). 
+Do you see any pattern to the data? Are temperatures rising? The previously defined 
+functions will be helpful here.
+
+```{r average_temp, echo=FALSE}
+
+  temp_m_2k<- temp_matrix[, 120:132]
+
+  plot(1:156, as.vector(temp_m_2k), ylab = "Temperatures", xlab ="Months (Since Jan 2000)")
+
+```
+
+1.   Create a plot of the monthly average temperatures starting at January 1990 
+and ending on December 1999. Do you see any pattern to the data? Are temperatures 
+rising? Which months had the highest and lowest temperatures?
+
+```{r monthly_averages, echo=FALSE}
+
+# Average temp over 9 year period
+temp_m_90s<- temp_matrix[, 110:119]
+
+ plot(1:120, as.vector(temp_m_90s), ylab = "Temperatures", xlab ="Months (Since Jan 1990)")
+ 
+```
+
+
+1.   Plot the monthly average temperature of every month in the 1890s. What is 
+the mean temperature of this decade? How does this decade compare to the 1990s?
+
+```{r 1980s_plot, ehco=FALSE}
+temp_m_1880s<- temp_matrix[, 10:19]
+plot(1:120, as.vector(temp_m_1880s), ylab = "Temperatures", xlab ="Months in the 1880's")
+
+```
+
+
+1.   Create plots of the monthly averages of the first 44 years, the second 44 
+years, and the last 43 years. Do you see any warming trends in any of these 
+plots? What is the average temperature of each of these time periods? Remember 
+to use the previously defined functions!
+
+```{r first_44, echo=FALSE}
+  
+temp_m_first_44<- temp_matrix[, 1:44]
+plot(1:528, as.vector(temp_m_first_44), ylab = "Temperatures", xlab ="Months for the first 44 years")
+```
+
+<div id="license">
+Adapted from material developed by Olaf Hall-Holt and Paul Roback for CS 125 at St. Olaf College.
+</div>
