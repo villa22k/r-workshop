@@ -21,12 +21,32 @@ data(quakes)
 ```
 
 1.   How would you find information about this data frame? How many rows and columns does it have?
+```{r}
+str(quakes)
+```
 1.   Based purely on the description of the columns (found with `?quakes`), would you expect a relationship between the 4th and 5th columns? Why or why not?
+
+Yes. The more stations that detect the quake, the larger the earthquake's magnitude.
+
 1.   Show a command you could use to find the average (mean) magnitude of all earthquakes that occurred below the median depth of all earthquakes.
+
+```{r}
+mean(quakes[quakes$depth < median(quakes$depth), ]$mag)
+```
+
 1.   How does the average magnitude of these "deep" earthquakes compare to the magnitude of "shallow" (above median depth) earthquakes?
+
+```{r}
+mean(quakes[quakes$depth > median(quakes$depth), ]$mag)
+```
+
+The mean recorded magnitude is lower.
+
 1.   Show the command you would use to get the row(s) with the smallest value in the `depth` column.
 
-
+```{r}
+quakes[which.min(quakes$depth), ]
+```
 
 <div id="license">
 Adapted from material developed by Olaf Hall-Holt and Paul Roback for CS 125 at St. Olaf College.

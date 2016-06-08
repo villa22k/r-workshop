@@ -71,7 +71,7 @@ mean_temp
 
 -Global Temperatures -
 <br>
-This project studies the average global temperatures starting from January 1881 and ending in December 2012. The data was parsed and analyzed to get some insights on average global temperatures. The mean temperature of the entire data set was found to be `r signif(mean_temp, digits=4)`
+This project studies the average global temperatures starting from January 1881 and ending in December 2012. The data was parsed and analyzed to get some insights on average global temperatures. The mean temperature of the entire data set was found to be `r mean_temp`
  
 
 1.   Find the mean global temperature of each the summer months: June, July, and August. Also please find the lowest and highest global average temperatures for each month. This is easiest if you create new vectors that have all June temperatures, all July temperatures, and so on. 
@@ -80,6 +80,7 @@ generally more recent than the lowest temperatures?
 
 
 ```{r mean_summers, echo=FALSE}
+
 temp_matrix <- matrix(temp_data_f, nrow = 12, ncol = 132, byrow = F)
 rownames(temp_matrix) <- c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 colnames(temp_matrix) <- 1:132
@@ -110,12 +111,14 @@ hottest_years
 # Min for each summer
 coldest_years <- apply(temp_matrix, 1, which.min) + 1881
 coldest_years
+
 ```
 
-The mean global temperature for June, July, and August (summer months) was calculated to be `r signif(summer_means[[1]], digits = 4)`, `r signif(summer_means[[2]], digits = 4)`, and `r signif(summer_means[[3]], digits = 4)` respectively. The highest temperatures for all months ranged from `r signif(hotest_months[[1]], digits = 4)` and `r signif(hotest_months[[12]], digits = 4)`. The lowest happening in July 2012 while the highest one occurred in January 2008. On the other hand, the lowest temperatures ranged from `r signif(coldest_months[[1]], digits = 4)` to `r signif(coldest_months[[12]], digits = 4)` which happened in January 1894 and May 1918 respectively, which shows that highest temperatures are more recent than colder ones. 
+-- Added 
+The mean global temperature for June, July, and August (summer months) was calculated to be ` r signif(summer_means[[1]], digits = 4)`, `r signif(summer_means[[2]], digits = 4)`, and `r signif(summer_means[[3]], digits = 4)` respectively. The highest temperatures for all months ranged from `r signif(hotest_months[[1]], digits = 4)` and `r signif(hotest_months[[12]], digits = 4)`. The lowest happening in July 2012 while the highest one occurred in January 2008. On the other hand, the lowest temperatures ranged from `r signif(coldest_months[[1]], digits = 4)` to `r signif(coldest_months[[12]], digits = 4)` which happened in January 1894 and May 1918 respectively, which shows that highest temperatures are more recent than colder ones. 
 
 The table below shows the highest temperatures in Farenheit per month and the year they happened.
-`r signif(rbind(max_temps_per_month, hottest_years), digits = 4)`
+` r signif(rbind(max_temps_per_month, hottest_years), digits = 4)`
 
 The table below shows the lowest temperatures in Farenheit per month and their corresponding year.
 `r signif(rbind(min_temps_per_month, coldest_years), digits = 4)`
@@ -172,30 +175,32 @@ The plots below show the montHly average temperature from 1881 to 2012 time peri
 ```{r plot_average_temp, echo=FALSE}
 
   years <- c(1881:2012)
-  plot(years, temp_matrix["Jan",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "blue", cex = 0.3, main= "January Average Temperatures")
+
+  par(mfrow=c(3,4))
+
+  plot(years, temp_matrix["Jan",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "blue", cex = 0.3, main= "January Average Temperatures", type="l")
   
+  plot(years, temp_matrix["Feb",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark red", cex = 0.3, main= "February Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Feb",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark red", cex = 0.3, main= "February Average Temperatures")
+  plot(years, temp_matrix["Mar",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark green", cex = 0.3, main= "March Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Mar",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark green", cex = 0.3, main= "March Average Temperatures")
+  plot(years, temp_matrix["Apr",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark blue", cex = 0.3, main= "April Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Apr",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark blue", cex = 0.3, main= "April Average Temperatures")
+  plot(years, temp_matrix["May",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "gold", cex = 0.3, main= "May Average Temperatures", type="l")
   
-  plot(years, temp_matrix["May",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "gold", cex = 0.3, main= "May Average Temperatures")
+  plot(years, temp_matrix["Jun",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "brown", cex = 0.3, main= "June Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Jun",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "brown", cex = 0.3, main= "June Average Temperatures")
+  plot(years, temp_matrix["Jul",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "purple", cex = 0.3, main= "July Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Jul",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "purple", cex = 0.3, main= "July Average Temperatures")
+  plot(years, temp_matrix["Aug",], ylab = "Temperature (F)", xlab = "Years", pch = 19,  cex = 0.3, main= "August Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Aug",], ylab = "Temperature (F)", xlab = "Years", pch = 19,  cex = 0.3, main= "August Average Temperatures")
+  plot(years, temp_matrix["Sep",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark grey", cex = 0.3, main= "September Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Sep",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "dark grey", cex = 0.3, main= "September Average Temperatures")
+  plot(years, temp_matrix["Oct",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = " orange", cex = 0.3, main= "October Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Oct",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = " orange", cex = 0.3, main= "October Average Temperatures")
+  plot(years, temp_matrix["Nov",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = " magenta", cex = 0.3, main= "November Average Temperatures", type="l")
   
-  plot(years, temp_matrix["Nov",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = " magenta", cex = 0.3, main= "November Average Temperatures")
-  
-  plot(years, temp_matrix["Dec",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "brown", cex = 0.3, main= "December Average Temperatures")
+  plot(years, temp_matrix["Dec",], ylab = "Temperature (F)", xlab = "Years", pch = 19, col = "brown", cex = 0.3, main= "December Average Temperatures", type="l")
 ```
 
 1.   Create a plot that shows the average annual temperature over all years. 
@@ -203,7 +208,7 @@ The plots below show the montHly average temperature from 1881 to 2012 time peri
 for a year.) In what years did the highest and lowest average temperatures occur?
 
 ```{r annual_temp, echo=FALSE}
-plot(years, colMeans(temp_matrix), ylab = "Temperature (F)", main= "Average Temperature (1881-2012)", xlab = "Years", pch = 19, col = "brown", cex = 0.3)
+plot(years, colMeans(temp_matrix), ylab = "Temperature (F)", main= "Average Temperature (1881-2012)", xlab = "Years", pch = 19, col = "brown", cex = 0.3, type = "l")
 
 # Calculate which year had the max temperature
 hottest_years<- which.max(colMeans(temp_matrix)) + 1881
@@ -228,7 +233,7 @@ functions will be helpful here.
 
   temp_m_2k<- temp_matrix[, 120:132]
 
-  plot(1:156, as.vector(temp_m_2k), ylab = "Temperature (F)", xlab ="Months (Jan 2000- Dec 2012)", pch = 19, col = "brown", cex = 0.3, main = "Monthly Average Temperature")
+  plot(1:156, as.vector(temp_m_2k), ylab = "Temperature (F)", xlab ="Months (Jan 2000- Dec 2012)", pch = 19, col = "brown", cex = 0.3, main = "Monthly Average Temperature", type = "l")
 
   
 ```
@@ -246,7 +251,7 @@ rising? Which months had the highest and lowest temperatures?
 # Average temp over 9 year period
 temp_m_90s<- temp_matrix[, 110:119]
 
- plot(1:120, as.vector(temp_m_90s), ylab = "Temperature (F)", xlab ="Months (Since Jan 1990)", pch = 19, col = "dark blue", cex = 0.3, main = "Monthly Average Temperature")
+ plot(1:120, as.vector(temp_m_90s), ylab = "Temperature (F)", xlab ="Months (Since Jan 1990)", pch = 19, col = "dark blue", cex = 0.3, main = "Monthly Average Temperature", type = "l")
  
 ```
 
@@ -254,13 +259,12 @@ temp_m_90s<- temp_matrix[, 110:119]
 1.   Plot the monthly average temperature of every month in the 1890s. What is 
 the mean temperature of this decade? How does this decade compare to the 1990s?
 
-```{r 1980s_plot, echo=FALSE}
+```{r 1980s_plot, ehco=FALSE}
+
 temp_m_1880s<- temp_matrix[, 10:19]
-plot(1:120, as.vector(temp_m_1880s), ylab = "Temperature (F)", xlab ="Months in the 1890's", pch = 19, col = "brown", cex = 0.3, main = " 1890's Monthly Average Temperature")
+plot(1:120, as.vector(temp_m_1880s), ylab = "Temperature (F)", xlab ="Months in the 1880's", pch = 19, col = "brown", cex = 0.3, main = " 1890's Monthly Average Temperature", type = "l")
 
 ```
-
-Compared to the 1890s, the 1990s average temperatures were a few degrees higher.
 
 
 1.   Create plots of the monthly averages of the first 44 years, the second 44 
@@ -272,34 +276,26 @@ to use the previously defined functions!
 
 # First 44-years 
 temp_m_first_44<- temp_matrix[, 1:44]
-plot(1:528, as.vector(temp_m_first_44), ylab = "Temperature (F)", xlab ="Months", pch = 19, col = "brown", cex = 0.3, main = "Monthly Average Temperature (1881-1925)") 
+plot(1:528, as.vector(temp_m_first_44), ylab = "Temperature (F)", xlab = "Months", pch = 19, col = "brown", cex = 0.3, main = "Monthly Average Temperature (1881-1925)", type = "l") 
 
 # Average temp for first 44 years
 av_temp_first_44 <- signif(mean(as.vector(temp_m_first_44)), digits = 4)
   
 # Second 44-years
 temp_m_second_44<- temp_matrix[, 45:89]
-plot(1:528, as.vector(temp_m_first_44), ylab = "Temperature (F)", xlab = "Months", pch = 19, col = "blue", cex = 0.3, main = "Monthly Average Temperature (1926-1970)")
+plot(1:540, as.vector(temp_m_second_44), ylab = "Temperature (F)", xlab = "Months", pch = 19, col = "blue", cex = 0.3, main = "Monthly Average Temperature (1926-1970)", type = "l")
 
 # Average temp for second 44 years
 av_temp_second_44 <- signif(mean(as.vector(temp_m_second_44)), digits = 4)
 
 # Last 43 years
 temp_m_last_43<- temp_matrix[, 90:132]
-plot(1:528, as.vector(temp_m_first_44), ylab = "Temperature (F)", xlab ="Months", pch = 19, col = "dark red", cex = 0.3, main = "Monthly Average Temperature (1971-2012)")
+plot(1:516, as.vector(temp_m_last_43), ylab = "Temperature (F)", xlab ="Months", pch = 19, col = "dark red", cex = 0.3, main = "Monthly Average Temperature (1970-2012)", type = "l")
 
 # Average temp for last 43-years
 av_temp_last_43<- signif(mean(as.vector(temp_m_last_43)), digits = 4)
 
 ```
-
-The average temperature for 1881 to 1925 time period was `r av_temp_first_44`.  
-
-The average temperature for 1926 to 1970 time period was `r av_temp_second_44`.  
-
-The average temperature for 1971 to 2012 time period was `r av_temp_last_43`.  
-
-Overall average temperature is increasing over each time frame.
 
 <div id="license">
 Adapted from material developed by Olaf Hall-Holt and Paul Roback for CS 125 at St. Olaf College.
