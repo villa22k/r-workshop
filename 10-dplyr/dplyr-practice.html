@@ -155,10 +155,42 @@ $(document).ready(function () {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(quakes)</code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Show a command you could use to find the average (mean) magnitude of all earthquakes that occurred below the median depth of all earthquakes.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quakes %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(depth &lt;<span class="st"> </span><span class="kw">median</span>(quakes$depth)) %&gt;%
+<span class="st">  </span><span class="kw">summarize</span>(<span class="kw">mean</span>(mag))</code></pre></div>
+<pre><code>##   mean(mag)
+## 1    4.7176</code></pre>
+<ol style="list-style-type: decimal">
 <li>How does the average magnitude of these “deep” earthquakes compare to the magnitude of “shallow” (above median depth) earthquakes?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quakes %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(depth &gt;<span class="st"> </span><span class="kw">median</span>(depth)) %&gt;%
+<span class="st">  </span><span class="kw">summarize</span>(<span class="kw">mean</span>(mag))</code></pre></div>
+<pre><code>##   mean(mag)
+## 1    4.5232</code></pre>
+<ol style="list-style-type: decimal">
 <li>Show the command you would use to get the row(s) with the smallest value in the <code>depth</code> column.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quakes %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(depth ==<span class="st"> </span><span class="kw">min</span>(depth))</code></pre></div>
+<pre><code>##       lat   long depth mag stations
+## 1  -15.46 187.81    40 5.5       91
+## 2  -34.20 179.43    40 5.0       37
+## 3  -26.78 183.61    40 4.6       22
+## 4  -30.40 181.40    40 4.3       17
+## 5  -15.90 167.42    40 5.5       86
+## 6  -20.33 168.71    40 4.8       38
+## 7  -23.92 184.47    40 4.7       17
+## 8  -16.49 187.80    40 4.5       18
+## 9  -15.00 184.62    40 5.1       54
+## 10 -21.14 174.21    40 5.7       78
+## 11 -15.78 167.44    40 4.8       42
+## 12 -17.40 187.80    40 4.5       14</code></pre>
+<ol style="list-style-type: decimal">
 <li>Show the command you would use to create a new data frame named <code>quakes_sorted</code> that stores the data in sorted order by <code>depth</code>.</li>
 </ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quakes_sorted &lt;-<span class="st"> </span><span class="kw">arrange</span>(quakes, depth)</code></pre></div>
 <hr />
 </div>
 <div id="flights-data" class="section level3">
@@ -166,8 +198,35 @@ $(document).ready(function () {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pnwflights14)
 <span class="kw">data</span>(flights)</code></pre></div>
 <ol style="list-style-type: decimal">
-<li><p>Say I fly very often between PDX airport in Portland and Logan Airport in Boston. Based on the 2013 data, which day of the week would you recommend that I buy a ticket for if I want to minimize delays?</p></li>
-<li><p>What advice do you have for the best airline for this route?</p></li>
+<li>Say I fly very often between PDX airport in Portland and Logan Airport in Boston. Based on the 2013 data, which day of the week would you recommend that I buy a ticket for if I want to minimize delays?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_day_of_week &lt;-<span class="st"> </span>function (d, m, y) {
+  <span class="kw">weekdays</span>(<span class="kw">as.Date</span>(<span class="kw">paste</span>(d, <span class="st">&quot;-&quot;</span>, m, <span class="st">&quot;-&quot;</span>, y, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>),
+                   <span class="st">'%d-%m-%Y'</span>))
+}
+<span class="kw">get_day_of_week</span>(<span class="dv">16</span>, <span class="dv">8</span>, <span class="dv">2012</span>)</code></pre></div>
+<pre><code>## [1] &quot;Thursday&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">flights %&gt;%
+<span class="st">  </span><span class="kw">filter</span>((dest ==<span class="st"> 'PDX'</span> |<span class="st"> </span>dest ==<span class="st"> 'BOS'</span>) &amp;<span class="st"> </span>(origin ==<span class="st"> 'PDX'</span> |<span class="st"> </span>origin ==<span class="st"> 'BOS'</span>))</code></pre></div>
+<pre><code>## Source: local data frame [504 x 16]
+## 
+##     year month   day dep_time dep_delay arr_time arr_delay carrier tailnum
+##    (int) (int) (int)    (int)     (dbl)    (int)     (dbl)   (chr)   (chr)
+## 1   2014     1     1      919        -6     1719       -16      AS  N535AS
+## 2   2014     1     2      922        -3     1811        36      AS  N526AS
+## 3   2014     1     3      922        -3     1720       -15      AS  N593AS
+## 4   2014     1     4      920        -5     1744         9      AS  N524AS
+## 5   2014     1     5      923        -2     1748        13      AS  N548AS
+## 6   2014     1     6      925         0     1743         8      AS  N533AS
+## 7   2014     1     8      933         8     1730        -5      AS  N525AS
+## 8   2014     1     9      921        -4     1742         7      AS  N508AS
+## 9   2014     1    10      920        -5     1716       -19      AS  N519AS
+## 10  2014     1    12      922        -3     1724       -11      AS  N529AS
+## ..   ...   ...   ...      ...       ...      ...       ...     ...     ...
+## Variables not shown: flight (int), origin (chr), dest (chr), air_time
+##   (dbl), distance (dbl), hour (dbl), minute (dbl)</code></pre>
+<ol style="list-style-type: decimal">
+<li>What advice do you have for the best airline for this route?</li>
 </ol>
 <hr />
 </div>
