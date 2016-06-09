@@ -7,28 +7,104 @@ output: ioslides_presentation
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+require(lubridate)
+
 ```
 
 # Lubridate
 
-A great package, which an umappealing name!
+A great package, with an unappealing name!
 
 ## The Problem
 
-How is the January 20th, 2016 represented in our data/code?
+Dates aren't standard at all!
 
-- "1/20/2016"
-- "20-01-2016"
-- "20160120"
+- January 20th, 2016
+- 1/20/2016
+- 20-01-2016
+- 20160120
 
 ## The Solution
 
-```{r, echo=TRUE, message=FALSE}
-library(lubridate)
+```{r echo=TRUE}
+mdy("1/20/2016")
+dmy("20-01-2016")
+ymd("20160120")
+mode(mdy("1/20/2016"))
 ```
 
-```{r}
-mdy("1/20/2016")
-mdy("20-01-2016")
-ymd("20160120")
+## Deconstructing Lubridates
+
+```{r, echo=TRUE}
+t <- now()
+t
+
+year(t)
+month(t)
+```
+
+## Deconstructing Lubridates (cont)
+
+```{r, echo=TRUE}
+day(t)
+hour(t)
+minute(t)
+```
+
+## Deconstructing Lubridates (cont)
+
+```{r, echo=TRUE}
+second(t)
+tz(t)
+
+t <- now("GMT")
+tz(t)
+```
+
+## Other date/time info
+
+Get day of the week (1 = Sunday, 2 = Monday, etc)
+```{r, echo=TRUE}
+t <-  now()
+wday(t)
+```
+
+Get day of the year
+```{r, echo=TRUE}
+yday(t)
+```
+
+## Change Time Zone
+
+Convert time to different time zone
+```{r, echo=TRUE}
+with_tz(t, tzone = "GMT")
+```
+
+Change time zone
+```{r, echo=TRUE}
+force_tz(t, tzone = "GMT")
+```
+
+## Durations
+
+How long have we been working for MassMutual
+```{r, echo=TRUE}
+t1 <- ymd_hms("2016-06-01-09-00-00", tz="EST")
+t2 <- now()
+t2 - t1
+```
+
+When will we have worked for MassMutual for 100 days?
+```{r, echo=TRUE}
+t1 + days(100)
+```
+
+## Durations (cont)
+
+```{r, echo=TRUE}
+t1 + milliseconds(100)
+t1 + seconds(100)
+t1 + minutes(100)
 ```

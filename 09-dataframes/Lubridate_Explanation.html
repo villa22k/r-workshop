@@ -94,27 +94,139 @@
 
 <slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Lubridate</h2></hgroup><article  id="lubridate">
 
-<p>A great package, which an umappealing name!</p>
+<p>A great package, with an unappealing name!</p>
 
 </article></slide><slide class=''><hgroup><h2>The Problem</h2></hgroup><article  id="the-problem">
 
-<p>How is the January 20th, 2016 represented in our data/code?</p>
+<p>Dates aren&#39;t standard at all!</p>
 
 <ul>
-<li>&quot;1/20/2016&quot;</li>
-<li>&quot;20-01-2016&quot;</li>
-<li>&quot;20160120&quot;</li>
+<li>January 20th, 2016</li>
+<li>1/20/2016</li>
+<li>20-01-2016</li>
+<li>20160120</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>The Solution</h2></hgroup><article  id="the-solution">
 
+<pre class = 'prettyprint lang-r'>mdy(&quot;1/20/2016&quot;)</pre>
+
 <pre >## [1] &quot;2016-01-20&quot;</pre>
 
-<pre >## Warning: All formats failed to parse. No formats found.</pre>
+<pre class = 'prettyprint lang-r'>dmy(&quot;20-01-2016&quot;)</pre>
 
-<pre >## [1] NA</pre>
+<pre >## [1] &quot;2016-01-20&quot;</pre>
 
-<pre >## [1] &quot;2016-01-20&quot;</pre></article></slide>
+<pre class = 'prettyprint lang-r'>ymd(&quot;20160120&quot;)</pre>
+
+<pre >## [1] &quot;2016-01-20&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>mode(mdy(&quot;1/20/2016&quot;))</pre>
+
+<pre >## [1] &quot;numeric&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Deconstructing Lubridates</h2></hgroup><article  id="deconstructing-lubridates">
+
+<pre class = 'prettyprint lang-r'>t &lt;- now()
+t</pre>
+
+<pre >## [1] &quot;2016-06-09 00:17:16 EDT&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>year(t)</pre>
+
+<pre >## [1] 2016</pre>
+
+<pre class = 'prettyprint lang-r'>month(t)</pre>
+
+<pre >## [1] 6</pre>
+
+</article></slide><slide class=''><hgroup><h2>Deconstructing Lubridates (cont)</h2></hgroup><article  id="deconstructing-lubridates-cont">
+
+<pre class = 'prettyprint lang-r'>day(t)</pre>
+
+<pre >## [1] 9</pre>
+
+<pre class = 'prettyprint lang-r'>hour(t)</pre>
+
+<pre >## [1] 0</pre>
+
+<pre class = 'prettyprint lang-r'>minute(t)</pre>
+
+<pre >## [1] 17</pre>
+
+</article></slide><slide class=''><hgroup><h2>Deconstructing Lubridates (cont)</h2></hgroup><article  id="deconstructing-lubridates-cont-1">
+
+<pre class = 'prettyprint lang-r'>second(t)</pre>
+
+<pre >## [1] 16.84222</pre>
+
+<pre class = 'prettyprint lang-r'>tz(t)</pre>
+
+<pre >## [1] &quot;&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>t &lt;- now(&quot;GMT&quot;)
+tz(t)</pre>
+
+<pre >## [1] &quot;GMT&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Other date/time info</h2></hgroup><article  id="other-datetime-info">
+
+<p>Get day of the week (1 = Sunday, 2 = Monday, etc)</p>
+
+<pre class = 'prettyprint lang-r'>t &lt;-  now()
+wday(t)</pre>
+
+<pre >## [1] 5</pre>
+
+<p>Get day of the year</p>
+
+<pre class = 'prettyprint lang-r'>yday(t)</pre>
+
+<pre >## [1] 161</pre>
+
+</article></slide><slide class=''><hgroup><h2>Change Time Zone</h2></hgroup><article  id="change-time-zone">
+
+<p>Convert time to different time zone</p>
+
+<pre class = 'prettyprint lang-r'>with_tz(t, tzone = &quot;GMT&quot;)</pre>
+
+<pre >## [1] &quot;2016-06-09 04:17:16 GMT&quot;</pre>
+
+<p>Change time zone</p>
+
+<pre class = 'prettyprint lang-r'>force_tz(t, tzone = &quot;GMT&quot;)</pre>
+
+<pre >## [1] &quot;2016-06-09 00:17:16 GMT&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Durations</h2></hgroup><article  id="durations">
+
+<p>How long have we been working for MassMutual</p>
+
+<pre class = 'prettyprint lang-r'>t1 &lt;- ymd_hms(&quot;2016-06-01-09-00-00&quot;, tz=&quot;EST&quot;)
+t2 &lt;- now()
+t2 - t1</pre>
+
+<pre >## Time difference of 7.595335 days</pre>
+
+<p>When will we have worked for MassMutual for 100 days?</p>
+
+<pre class = 'prettyprint lang-r'>t1 + days(100)</pre>
+
+<pre >## [1] &quot;2016-09-09 09:00:00 EST&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Durations (cont)</h2></hgroup><article  id="durations-cont">
+
+<pre class = 'prettyprint lang-r'>t1 + milliseconds(100)</pre>
+
+<pre >## [1] &quot;2016-06-01 09:00:00 EST&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>t1 + seconds(100)</pre>
+
+<pre >## [1] &quot;2016-06-01 09:01:40 EST&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>t1 + minutes(100)</pre>
+
+<pre >## [1] &quot;2016-06-01 10:40:00 EST&quot;</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

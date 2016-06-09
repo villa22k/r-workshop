@@ -21,6 +21,25 @@ haven't seen!) to reveal an interesting relationship.
 
 You will be presenting one of these plots to the group.
 
+```{r}
+library(dplyr)
+library(ggplot2)
+library(mapproj)
+library(magrittr)
+
+world <- map_data("world")
+worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+  geom_path(color = 'darkolivegreen') +
+  coord_map("ortho", orientation = c(0, 180, 0), xlim = c(160, 190), ylim = c(-40,0)) +
+  geom_point(data = quakes, aes(long, lat, group = mag, color = depth, size = stations), size = 0.5) +
+  theme_bw()
+  
+worldmap
+
+
+```
+
+
 * * *
 
 ## Flights
@@ -37,6 +56,22 @@ distance of less than 2000 miles.
 <center>
 <img src="ggplot.png" width = 500>
 </center>
+
+
+```{r}
+library(pnwflights14)
+
+flights %>%
+  group_by(tailnum) %>%
+  summarise(num_flights = n(), 
+            avg_dist = mean(distance, na.rm = TRUE),
+            avg_delay = mean(arr_delay, na.rm = TRUE)) %>%
+  filter(avg_dist < 2000 & num_flights > 20 & !is.nan(avg_delay)) %>%
+  ggplot(aes(x = avg_dist, y = avg_delay)) +
+  geom_point(aes(size = num_flights), alpha = 0.2) + 
+  geom_smooth()
+```
+
 
 1. There are two plots that show up 
 in the `dplyr` slides. How could these be improved to make them easier to read/interpret? Please implement these improvements.
